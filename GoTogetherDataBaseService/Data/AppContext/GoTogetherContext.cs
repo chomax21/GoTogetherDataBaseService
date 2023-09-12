@@ -8,9 +8,7 @@ namespace GoTogetherDataBaseService.Data.AppContext
         public GoTogetherContext(DbContextOptions<GoTogetherContext> options) : base(options)
         {
         }
-
-        DbSet<User> Users { get; set; }
-        DbSet<UserProperties> userProperties { get; set; }
-   
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserProperties> UserProperties { get; set; }   
     }
 }
