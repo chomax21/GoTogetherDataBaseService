@@ -13,24 +13,24 @@ namespace GoTogetherDataBaseService.Services
         {
             _context = context;
         }
-        public User GetUser(int id)
+        public async Task<User> GetUserAsync(int id)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id == id);
-            if (user != null) return user!;
+            var user = await _context.Users.FindAsync(id);
+            if (user != null) return user;
             throw new NotFoundUserException("Пользователь с идентификатором не найден!", id);
         }
-        public bool DeleteUser(int id)
+        public async Task<bool> DeleteUserAsync(int id)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id == id);
+            var user = await _context.Users.FindAsync(id);
             if (user != null)
             {
                 _context.Users.Remove(user!);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             throw new NotFoundUserException("Пользователь с идентификатором не найден!", id);
         }
-        public async Task<bool> CreateUser(User user)
+        public async Task<bool> CreateUserAsync(User user)
         {
             var usersInBase = _context.Users.FirstOrDefault(x => x.Email == user.Email);
             if (usersInBase != null)
@@ -42,14 +42,14 @@ namespace GoTogetherDataBaseService.Services
             return true;
         }
 
-        public async Task<bool> UpdateUser(User user)
+        public async Task<bool> UpdateUserAsync(User user)
         {
             var usersInBase = _context.Users.FirstOrDefault(x => x.Id == user.Id);
             if (usersInBase != null)
             {
                 await Task.Run(() =>
                 {
-                    _context.Update(user);
+                    //_context.Update(user);
                     _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     return true;
                 });
