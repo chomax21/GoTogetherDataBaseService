@@ -1,6 +1,7 @@
 ﻿using GoTogetherDataBaseService.Data.AppContext;
 using GoTogetherDataBaseService.Data.Models;
 using GoTogetherDataBaseService.Exсeptions;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace GoTogetherDataBaseService.Services
@@ -33,6 +34,7 @@ namespace GoTogetherDataBaseService.Services
         public async Task<bool> CreateUserAsync(User user)
         {
             var usersInBase = _context.Users.FirstOrDefault(x => x.Email == user.Email);
+            var usersInBase1 = _context.Users.Include(x => x.Email);
             if (usersInBase != null)
             {
                 return false;
@@ -44,7 +46,7 @@ namespace GoTogetherDataBaseService.Services
 
         public async Task<bool> UpdateUserAsync(User user)
         {
-            var usersInBase = _context.Users.FirstOrDefault(x => x.Id == user.Id);
+            var usersInBase = await _context.Users.FindAsync(user.Id);
             if (usersInBase != null)
             {
                 await Task.Run(() =>
@@ -56,5 +58,7 @@ namespace GoTogetherDataBaseService.Services
             }
             throw new NotFoundUserException("Пользователь с идентификатором не найден!", user.Id);
         }
+
+        
     }
 }
