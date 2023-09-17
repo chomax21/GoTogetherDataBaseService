@@ -13,6 +13,12 @@ namespace GoTogetherDataBaseService.Controllers
             _creator = creator;                
         }
 
+        public IActionResult Index()
+        {
+            return Ok("Hello");
+        }
+
+        [HttpPost]
         public async Task<IActionResult> CreateUser(User user)
         {
             if (user != null)

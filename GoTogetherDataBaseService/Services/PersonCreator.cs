@@ -46,7 +46,7 @@ namespace GoTogetherDataBaseService.Services
 
         public async Task<bool> UpdateUserAsync(User user)
         {
-            var usersInBase = await _context.Users.FindAsync(user.Id);
+            var usersInBase = await _context.Users.Include(x => x.userProperties).FirstOrDefaultAsync(x=> x.Id == user.Id);
             if (usersInBase != null)
             {
                 await Task.Run(() =>

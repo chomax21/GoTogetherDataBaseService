@@ -14,8 +14,5 @@
         public int WalkOrTransport { get ; set; }
         public int TalkOrListen { get ; set; }
         public int BadHabits { get ; set; }
-
-        public int UserId { get; set; }
-        public User? User { get; set; }
     }
 }
