@@ -1,12 +1,12 @@
 ﻿using GoTogetherDataBaseService.Data.AppContext;
 using GoTogetherDataBaseService.Data.Models;
 using GoTogetherDataBaseService.Exсeptions;
+using GoTogetherDataBaseService.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace GoTogetherDataBaseService.Services
 {
-    public class PersonCreator
+    public class PersonCreator : IPersonCreator<User>
     {
         private readonly GoTogetherContext _context;
 
@@ -29,7 +29,8 @@ namespace GoTogetherDataBaseService.Services
                 await _context.SaveChangesAsync();
                 return true;
             }
-            throw new NotFoundUserException("Пользователь с идентификатором {0} не найден!", id);
+            return false;
+            throw new NotFoundUserException("Пользователь с идентификатором {0} не найден!", id);            
         }
         public async Task<bool> CreateUserAsync(User user)
         {
@@ -56,9 +57,10 @@ namespace GoTogetherDataBaseService.Services
                     return true;
                 });
             }
+            return false;
             throw new NotFoundUserException("Пользователь с идентификатором {0} не найден!", user.Id);
         }
 
-        
+
     }
 }
