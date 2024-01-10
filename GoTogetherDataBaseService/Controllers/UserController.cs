@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GoTogetherDataBaseService.Controllers
 {
+    [ApiController]
     public class UserController : ControllerBase
     {
         private readonly PersonCreator _creator;
@@ -13,12 +14,15 @@ namespace GoTogetherDataBaseService.Controllers
             _creator = creator;                
         }
 
+        [HttpGet]
+        [Route("index")]
         public IActionResult Index()
         {
             return Ok("Hello");
         }
 
         [HttpPost]
+        [Route("create-user")]
         public async Task<IActionResult> CreateUser(User user)
         {
             if (user != null)

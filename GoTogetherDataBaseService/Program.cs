@@ -1,4 +1,5 @@
 using GoTogetherDataBaseService.Data.AppContext;
+using GoTogetherDataBaseService.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 var connetcionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<GoTogetherContext>(options => options.UseNpgsql(connetcionString));
+builder.Services.AddScoped<PersonCreator>();
 
 var app = builder.Build();
 

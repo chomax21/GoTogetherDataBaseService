@@ -18,7 +18,7 @@ namespace GoTogetherDataBaseService.Services
         {
             var user = await _context.Users.FindAsync(id);
             if (user != null) return user;
-            throw new NotFoundUserException("Пользователь с идентификатором не найден!", id);
+            throw new NotFoundUserException("Пользователь с идентификатором {0} не найден!", id);
         }
         public async Task<bool> DeleteUserAsync(int id)
         {
@@ -29,12 +29,12 @@ namespace GoTogetherDataBaseService.Services
                 await _context.SaveChangesAsync();
                 return true;
             }
-            throw new NotFoundUserException("Пользователь с идентификатором не найден!", id);
+            throw new NotFoundUserException("Пользователь с идентификатором {0} не найден!", id);
         }
         public async Task<bool> CreateUserAsync(User user)
         {
             var usersInBase = _context.Users.FirstOrDefault(x => x.Email == user.Email);
-            var usersInBase1 = _context.Users.Include(x => x.Email);
+            //var usersInBase1 = _context.Users.Include(x => x.Email);
             if (usersInBase != null)
             {
                 return false;
@@ -46,17 +46,17 @@ namespace GoTogetherDataBaseService.Services
 
         public async Task<bool> UpdateUserAsync(User user)
         {
-            var usersInBase = await _context.Users.Include(x => x.userProperties).FirstOrDefaultAsync(x=> x.Id == user.Id);
+            var usersInBase = await _context.Users.FindAsync(user.Id);
             if (usersInBase != null)
             {
                 await Task.Run(() =>
                 {
                     //_context.Update(user);
-                    _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    _context.Entry(user).State = EntityState.Modified;
                     return true;
                 });
             }
-            throw new NotFoundUserException("Пользователь с идентификатором не найден!", user.Id);
+            throw new NotFoundUserException("Пользователь с идентификатором {0} не найден!", user.Id);
         }
 
         
