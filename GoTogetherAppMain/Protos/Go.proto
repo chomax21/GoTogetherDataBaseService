@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+
+package Go;
+
+message GoRequest{
+	string Name = 1;
+	string LastName = 2;
+	string Email = 3;
+	int32 Age = 4;
+}
+
+message GoResponce{
+	string Name = 1;
+	string Email = 2;
+	bool Done = 3;
+}
+
+service UserCreator{
+	rpc UserCreate (GoRequest) returns (GoResponce);
+}
