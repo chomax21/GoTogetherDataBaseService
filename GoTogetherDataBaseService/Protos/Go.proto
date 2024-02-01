@@ -1,7 +1,5 @@
 ﻿syntax = "proto3";
 
-
-
 package Go;
 
 message GoRequest{

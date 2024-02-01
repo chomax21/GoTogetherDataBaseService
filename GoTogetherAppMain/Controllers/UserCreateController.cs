@@ -1,8 +1,8 @@
 ﻿using Go;
+using Microsoft.AspNetCore.Mvc;
+using Grpc.Net.Client;
 using GoTogetherAppMain.Models;
 using GoTogetherAppMain.Services;
-using Grpc.Core;
-using Microsoft.AspNetCore.Mvc;
 
 namespace GoTogetherAppMain.Controllers
 {
@@ -13,23 +13,19 @@ namespace GoTogetherAppMain.Controllers
 
         public UserCreateController(UserCreatorService userCreator)
         {
-            _userCreator = userCreator;
+            _userCreator = userCreator; 
         }
 
         [HttpPost]
         [Route("user-create")]
-        public async Task<IActionResult> UserCreate(UserViewModel userView)
-        {         
-            GoRequest request = new();
-            request.Age = userView.Age;
-            request.Name = userView.Name;
-            request.Email = userView.Email;
-            var responce =  await _userCreator.UserCreate(request);
-            if (responce.Done) 
-            {
-                return Ok($"User {userView.Name} created!");
-            }
-            return BadRequest("ErrorUserCreated");
+        public async Task<IActionResult> UserCreateAsync(UserViewModel viewModel)
+        {                              
+                var responce = await _userCreator.CreateUserAsync(viewModel);
+                if (responce != null && responce.Done)
+                {
+                    return Ok($"User {responce.Name} created!");
+                }
+                return BadRequest("ErrorUserCreated");
         }
     }
 }

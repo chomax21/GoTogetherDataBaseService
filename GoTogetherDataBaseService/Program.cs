@@ -1,3 +1,4 @@
+using GoTogetherAppMain.Services;
 using GoTogetherDataBaseService.Data.AppContext;
 using GoTogetherDataBaseService.Data.Models;
 using GoTogetherDataBaseService.Interfaces;
@@ -16,6 +17,7 @@ builder.Services.AddSwaggerGen();
 var connetcionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<GoTogetherContext>(options => options.UseNpgsql(connetcionString));
 builder.Services.AddScoped<IPersonCreator<User>,PersonCreator>();
+builder.Services.AddGrpc();
 
 var app = builder.Build();
 
@@ -25,6 +27,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapGrpcService<UserCreatorService>();
 
 app.UseHttpsRedirection();
 
